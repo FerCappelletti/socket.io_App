@@ -38,18 +38,24 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      
-    <form onSubmit={handleSubmit}>
-      <input type="text" onChange={e => setMessage(e.target.value)} value={message}/>
-      <button>Send</button>
-    </form>
+    <div className="h-screen bg-zinc-800 text-white flex items-center justify-center">  
+    <form onSubmit={handleSubmit} className="bg-zinc-900 p-10">
+    <h1 className='text-2xl font-bold my-2'>Chat React</h1>
+      <input type="text" onChange={e => setMessage(e.target.value)} 
+      value={message}
+      className="border-2 border-zinc-500 p-2 text-black w-full"
+      />
+      {/* <button className='bg-blue-500'>Send</button> */}
 
-    {messages.map((message, i) => (
-      <div key={i}>
-        <p>{message.from}: {message.body}</p>
-      </div> 
-    ))}
+      <ul className='h-80 overflow-y-auto'>
+        {messages.map((message, i) => (
+          <li key={i} className={`my-2 p-2 table text-sm rounded-md ${message.from === "Me" ? "bg-sky-700 ml-auto" : "bg-black"}`}>
+            <p>{message.from}: {message.body}</p>
+          </li> 
+        ))}
+      </ul>
+
+    </form>
     </div>
   );
 }
