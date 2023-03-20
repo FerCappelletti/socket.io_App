@@ -1,32 +1,44 @@
-import  express from "express";
-import morgan from "morgan";
+import app from "./app.js"
 import { Server as SocketServer } from "socket.io";
 import http from "http";
 import cors from "cors";
 import { PORT } from "./config.js";
+import { connectDB } from "./db.js";
 
-const app = express();
+
+connectDB();
+
 const server = http.createServer(app);
-const io = new SocketServer(server, {
-    cors: {
-        origin: "*"
-    }
-});
+const httpServer = server.listen(PORT)
+const io = new SocketServer(httpServer, {
+        cors: {
+             origin: "*"
+        }
+   });
 
-app.use(cors())
-app.use(morgan("dev"));
 
-io.on('connection', (socket) => {
-    console.log('a user connected ' + socket.id);
-
-    socket.on('message', (message) => {
-        console.log(message)
-        socket.broadcast.emit('message', {
-            body: message,
-            from: socket.id
-        })
-    })
-  });
-
-server.listen(PORT)
 console.log("Server started on port " + PORT)
+
+// import morgan from "morgan";
+
+
+
+
+
+// app.use(cors())
+// app.use(morgan("dev"));
+
+// io.on('connection', (socket) => {
+//     console.log('a user connected ' + socket.id);
+
+//     socket.on('message', (message) => {
+//         console.log(message)
+//         socket.broadcast.emit('message', {
+//             body: message,
+//             from: socket.id
+//         })
+//     })
+//   });
+
+
+
